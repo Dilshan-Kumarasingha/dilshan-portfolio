@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion, useReducedMotion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useReducedMotion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { ArrowUpRight, Sparkles, Mail, Terminal } from 'lucide-react'
 import AIAssistant from './AIAssistant'
 import profilePhoto from '../assets/Profile 2.jpeg'
@@ -111,16 +111,113 @@ function StackTicker() {
   )
 }
 
+// Drifting dot field — a handful of small particles slowly floating
+// upward through the backdrop, like log lines scrolling off-screen.
+// Purely decorative, sits behind everything else.
+function ParticleField({ prefersReducedMotion }) {
+  if (prefersReducedMotion) return null
+
+  const particles = [
+    { left: '8%', size: 3, duration: 14, delay: 0 },
+    { left: '22%', size: 2, duration: 18, delay: 2 },
+    { left: '38%', size: 2, duration: 16, delay: 5 },
+    { left: '54%', size: 3, duration: 20, delay: 1 },
+    { left: '68%', size: 2, duration: 15, delay: 7 },
+    { left: '81%', size: 2, duration: 19, delay: 3 },
+    { left: '92%', size: 3, duration: 17, delay: 6 },
+  ]
+
+  return (
+    <div className="hero-particle-field" aria-hidden="true">
+      {particles.map((p, i) => (
+        <motion.span
+          key={i}
+          className="hero-particle"
+          style={{
+            left: p.left,
+            width: p.size,
+            height: p.size,
+          }}
+          initial={{ y: '110%', opacity: 0 }}
+          animate={{ y: '-10%', opacity: [0, 0.7, 0.7, 0] }}
+          transition={{
+            duration: p.duration,
+            delay: p.delay,
+            repeat: Infinity,
+            ease: 'linear',
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+// Magnetic button — the primary CTA gently pulls toward the cursor
+// within a small radius, then springs back on mouse leave.
+function MagneticButton({ children, prefersReducedMotion, ...props }) {
+  const ref = useRef(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const springX = useSpring(x, { stiffness: 200, damping: 18 })
+  const springY = useSpring(y, { stiffness: 200, damping: 18 })
+
+  const handleMouseMove = (e) => {
+    if (prefersReducedMotion || !ref.current) return
+    const rect = ref.current.getBoundingClientRect()
+    const relX = e.clientX - (rect.left + rect.width / 2)
+    const relY = e.clientY - (rect.top + rect.height / 2)
+    x.set(relX * 0.25)
+    y.set(relY * 0.25)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
+
+  return (
+    <motion.a
+      ref={ref}
+      style={prefersReducedMotion ? undefined : { x: springX, y: springY }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      {...props}
+    >
+      {children}
+    </motion.a>
+  )
+}
+
 function Hero() {
   const [isAiOpen, setIsAiOpen] = useState(false)
   const prefersReducedMotion = useReducedMotion()
   const heroRef = useRef(null)
+  const [hasFinePointer, setHasFinePointer] = useState(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return false
+    return window.matchMedia('(pointer: fine)').matches
+  })
+
+  useEffect(() => {
+    if (!window.matchMedia) return
+    const query = window.matchMedia('(pointer: fine)')
+    const handleChange = (e) => setHasFinePointer(e.matches)
+    query.addEventListener('change', handleChange)
+    return () => query.removeEventListener('change', handleChange)
+  }, [])
 
   // Cursor-reactive glow — desktop-only ambient effect
   const mvX = useMotionValue(50)
   const mvY = useMotionValue(20)
   const glowX = useSpring(mvX, { stiffness: 50, damping: 20 })
   const glowY = useSpring(mvY, { stiffness: 50, damping: 20 })
+
+  // Photo tilt — small 3D rotation that follows the cursor across the
+  // whole hero, independent springs so it settles with a slight delay
+  // relative to the glow for a layered, parallax feel.
+  const tiltX = useTransform(mvY, [0, 100], [8, -8])
+  const tiltY = useTransform(mvX, [0, 100], [-8, 8])
+  const springTiltX = useSpring(tiltX, { stiffness: 80, damping: 15 })
+  const springTiltY = useSpring(tiltY, { stiffness: 80, damping: 15 })
 
   useEffect(() => {
     if (prefersReducedMotion) return
@@ -166,6 +263,7 @@ function Hero() {
         />
         <div className="hero-vignette" />
         <div className="hero-noise" />
+        <ParticleField prefersReducedMotion={prefersReducedMotion} />
       </div>
 
       <motion.div
@@ -198,15 +296,16 @@ function Hero() {
             </motion.p>
 
             <motion.div className="hero-action-cluster" variants={itemVariants}>
-              <motion.a
+              <MagneticButton
                 href="#projects"
                 className="action-btn-primary"
-                whileHover={prefersReducedMotion ? {} : { y: -2 }}
-                whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+                prefersReducedMotion={prefersReducedMotion}
+                whileHover={prefersReducedMotion ? {} : { scale: 1.04 }}
+                whileTap={prefersReducedMotion ? {} : { scale: 0.97 }}
               >
                 <span>Explore Systems</span>
                 <ArrowUpRight size={16} className="action-btn-arrow" />
-              </motion.a>
+              </MagneticButton>
 
               <motion.button
                 className="action-btn-secondary"
@@ -246,7 +345,28 @@ function Hero() {
           </div>
 
           <motion.div className="hero-photo-col" variants={itemVariants}>
-            <div className="photo-terminal-frame">
+            <motion.div
+              className="photo-terminal-frame"
+              style={
+                prefersReducedMotion || !hasFinePointer
+                  ? undefined
+                  : {
+                      rotateX: springTiltX,
+                      rotateY: springTiltY,
+                      transformPerspective: 800,
+                    }
+              }
+              animate={
+                prefersReducedMotion
+                  ? undefined
+                  : { y: [0, -10, 0] }
+              }
+              transition={
+                prefersReducedMotion
+                  ? undefined
+                  : { duration: 5, repeat: Infinity, ease: 'easeInOut' }
+              }
+            >
               <div className="photo-terminal-titlebar">
                 <span className="photo-terminal-dot dot-red" />
                 <span className="photo-terminal-dot dot-amber" />
@@ -261,8 +381,24 @@ function Hero() {
                   alt="Dilshan Kumarasingha"
                   className="hero-photo-img"
                 />
+                {!prefersReducedMotion && (
+                  <motion.div
+                    className="photo-scan-line"
+                    animate={{ top: ['0%', '100%', '0%'] }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                      delay: 1,
+                    }}
+                  />
+                )}
+                <span className="photo-corner photo-corner-tl" />
+                <span className="photo-corner photo-corner-tr" />
+                <span className="photo-corner photo-corner-bl" />
+                <span className="photo-corner photo-corner-br" />
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </motion.div>

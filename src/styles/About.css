@@ -57,6 +57,21 @@
   font-weight: 500;
 }
 
+.eyebrow-cursor {
+  display: inline-block;
+  width: 5px;
+  height: 11px;
+  background: #3ddc84;
+  box-shadow: 0 0 6px rgba(61, 220, 132, 0.6);
+  animation: eyebrow-blink 1s steps(2, jump-none) infinite;
+}
+
+@keyframes eyebrow-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 .eyebrow-bracket {
   color: #3ddc84;
 }
@@ -189,7 +204,7 @@
   padding-left: 0.3rem;
 }
 
-.ledger-track::before {
+.ledger-track-line {
   content: '';
   position: absolute;
   left: 3px;
@@ -197,6 +212,8 @@
   bottom: 6px;
   width: 1px;
   background: rgba(237, 239, 243, 0.1);
+  transform-origin: top;
+  display: block;
 }
 
 .ledger-row {
@@ -259,5 +276,12 @@
 @media (max-width: 480px) {
   .stats-monolithic-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow-cursor {
+    animation: none;
+    opacity: 1;
   }
 }

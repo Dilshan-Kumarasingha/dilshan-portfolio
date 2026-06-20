@@ -191,6 +191,77 @@
   border: 1px solid rgba(237, 239, 243, 0.1);
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55),
     0 0 60px rgba(61, 220, 132, 0.06);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ---------- Scan line + corner brackets (overlaid on photo) ---------- */
+
+.photo-scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(61, 220, 132, 0.85),
+    transparent
+  );
+  box-shadow: 0 0 12px rgba(61, 220, 132, 0.6);
+  pointer-events: none;
+}
+
+.photo-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(61, 220, 132, 0.55);
+  pointer-events: none;
+}
+
+.photo-corner-tl {
+  top: 8px;
+  left: 8px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.photo-corner-tr {
+  top: 8px;
+  right: 8px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.photo-corner-bl {
+  bottom: 8px;
+  left: 8px;
+  border-right: none;
+  border-top: none;
+}
+
+.photo-corner-br {
+  bottom: 8px;
+  right: 8px;
+  border-left: none;
+  border-top: none;
+}
+
+/* ---------- Drifting particle field (backdrop) ---------- */
+
+.hero-particle-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.hero-particle {
+  position: absolute;
+  bottom: 0;
+  border-radius: 50%;
+  background: #3ddc84;
+  box-shadow: 0 0 6px rgba(61, 220, 132, 0.7);
 }
 
 .photo-terminal-titlebar {
