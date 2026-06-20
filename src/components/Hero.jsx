@@ -24,9 +24,6 @@ const STACK_LOG = [
   'selenium', 'nunit', 'react', 'docker', 'aws'
 ]
 
-// Test-runner status dots — the signature element.
-// Sequence: each dot flashes red -> amber -> settles green, staggered,
-// echoing a real CI test suite finishing up. Loops slowly in the background.
 function TestRunnerBadge({ prefersReducedMotion }) {
   const dotCount = 5
   const dots = Array.from({ length: dotCount })
@@ -57,8 +54,7 @@ function TestRunnerBadge({ prefersReducedMotion }) {
   )
 }
 
-// Headline that types itself out character by character, CI-log style,
-// then leaves a blinking cursor on the final word.
+
 function TypedHeadline({ prefersReducedMotion }) {
   const fullText = 'Builds the system. Breaks it on purpose. Ships it proven.'
   const [shown, setShown] = useState(prefersReducedMotion ? fullText.length : 0)
