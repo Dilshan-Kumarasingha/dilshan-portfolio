@@ -1,8 +1,9 @@
 /* ============================================================
    NAVBAR — title bar of the build-log identity. Signature: an
    active-section dot, like a running-process indicator, marks
-   which part of the page you're currently "executing" — a
-   real wayfinding aid on a single-page site, not decoration.
+   which part of the page you're currently "executing" — now
+   animates between links via layoutId instead of just appearing.
+   Mobile gets a real slide-out panel rather than just hiding links.
    ============================================================ */
 
 .navbar {
@@ -46,13 +47,20 @@
   text-decoration: none;
   letter-spacing: -0.01em;
   font-family: 'JetBrains Mono', monospace;
+  transition: opacity 0.2s ease;
+  position: relative;
+  z-index: 101;
+}
+
+.navbar-logo:hover {
+  opacity: 0.82;
 }
 
 .logo-bracket {
   color: #3ddc84;
 }
 
-/* ---------- Links ---------- */
+/* ---------- Desktop links ---------- */
 
 .navbar-links {
   display: flex;
@@ -106,25 +114,156 @@
   color: #57e89a;
 }
 
+/* ---------- Mobile menu toggle ---------- */
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 101;
+  padding: 0;
+}
+
+.menu-toggle-bar {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: #edeff3;
+  border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.2s ease;
+}
+
+.menu-toggle-open .menu-toggle-bar:first-child {
+  transform: translateY(3.25px) rotate(45deg);
+}
+
+.menu-toggle-open .menu-toggle-bar:last-child {
+  transform: translateY(-3.25px) rotate(-45deg);
+}
+
+/* ---------- Mobile slide-out panel ---------- */
+
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 20, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 99;
+}
+
+.mobile-nav-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(78vw, 340px);
+  z-index: 100;
+  background: #0d1219;
+  border-left: 1px solid rgba(237, 239, 243, 0.09);
+  box-shadow: -30px 0 60px rgba(0, 0, 0, 0.45);
+  padding: 6.5rem 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.mobile-nav-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
+  color: #6b7383;
+  font-weight: 500;
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid rgba(237, 239, 243, 0.06);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #9aa3b2;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease;
+}
+
+.mobile-nav-link-index {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #4b5263;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link-active {
+  color: #edeff3;
+}
+
+.mobile-nav-link-active .mobile-nav-link-index {
+  color: #3ddc84;
+}
+
+.mobile-nav-cta {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.6rem;
+  background: #3ddc84;
+  color: #0a0e14;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-nav-cta:hover {
+  background: #57e89a;
+}
+
 /* ---------- Responsive ---------- */
+
+@media (max-width: 720px) {
+  .navbar-links {
+    display: none;
+  }
+  .menu-toggle {
+    display: flex;
+  }
+}
 
 @media (max-width: 640px) {
   .navbar {
     padding: 0.9rem 1.25rem;
   }
-  .navbar-links {
-    gap: 1.1rem;
-  }
-  .nav-link {
-    font-size: 0.78rem;
-  }
-  .contact-nav {
-    padding: 0.4rem 0.85rem;
-  }
 }
 
-@media (max-width: 480px) {
-  .navbar-links a:not(.contact-nav) {
-    display: none;
+@media (prefers-reduced-motion: reduce) {
+  .menu-toggle-bar {
+    transition: none;
   }
 }
