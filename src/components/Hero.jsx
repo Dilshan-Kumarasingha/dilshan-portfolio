@@ -20,8 +20,8 @@ const LinkedinIcon = () => (
 )
 
 const STACK_LOG = [
-  'java', 'spring-boot', 'csharp', '.net-core', 'postgresql',
-  'selenium', 'nunit', 'react', 'docker', 'aws'
+  'csharp', 'asp.net-core', 'react', 'typescript', 'postgresql',
+  'signalr', 'hangfire', 'nunit', 'java', 'spring-boot'
 ]
 
 function TestRunnerBadge({ prefersReducedMotion }) {
@@ -286,10 +286,11 @@ function Hero() {
             </motion.div>
 
             <motion.p className="hero-editorial-body" variants={itemVariants}>
-              Full-stack engineer with banking-grade discipline. I architect
-              high-throughput backends in Java, Spring Boot, and .NET Core,
-              then hold them accountable with the same QA automation rigor a
-              bank's release process demands.
+              Full-stack engineer focused on C# and ASP.NET Core, paired with
+              React on the frontend. I build systems with real business logic
+              — auth, real-time updates, background automation — then hold
+              them accountable with the same QA automation rigor a
+              professional release process demands.
             </motion.p>
 
             <motion.div className="hero-action-cluster" variants={itemVariants}>

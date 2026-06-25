@@ -3,9 +3,9 @@ import { motion, useReducedMotion, useScroll, useTransform, useSpring } from 'fr
 import '../styles/About.css'
 
 const stats = [
-  { value: 2, suffix: '+', label: 'Years in banking & enterprise software' },
+  { value: 1, suffix: '+', label: 'Years across IT operations & internship' },
+  { value: 3, suffix: '', label: 'Production-style full-stack projects shipped' },
   { value: 3, suffix: '', label: 'QA layers covered — UI, API, Database' },
-  { value: 10, suffix: '+', label: 'Business rules tested at service layer' },
   { value: 40, suffix: '+', label: 'Workstations deployed at Lyceum IMS' },
 ]
 
@@ -22,8 +22,8 @@ const timeline = [
   },
 ]
 
-const HEADLINE_PLAIN = 'Built for environments where '
-const HEADLINE_ACCENT = 'bugs cost real money.'
+const HEADLINE_PLAIN = 'Built with the discipline of '
+const HEADLINE_ACCENT = 'production, not practice.'
 
 // One word of the headline. Reads its own slice of the shared scroll
 // progress and resolves from a faint, slightly-blurred, lowered state
@@ -207,21 +207,23 @@ function About() {
               style={prefersReducedMotion ? undefined : { y: paraY, opacity: paraOpacity }}
             >
               <p className="about-text">
-                I started my career inside Bank of Ceylon — one of Sri
-                Lanka's largest state banks — contributing to core banking
-                features across the full SDLC in a security-compliant
-                environment handling millions of daily transactions.
+                I got my first real exposure to professional software
+                development as an intern at Bank of Ceylon, working across
+                the full SDLC on backend features within a
+                security-compliant, regulated environment.
               </p>
               <p className="about-text">
-                That experience shaped how I build: every feature needs to
-                work, every edge case needs a test, and every deployment
-                needs to be predictable. I bring that same discipline to
-                every project I ship.
+                That experience set the bar for how I work: every feature
+                needs to be tested, every edge case needs to be handled, and
+                every deployment needs to be predictable. Since then, I've
+                applied that same discipline independently — designing and
+                building full-stack systems with real business logic, then
+                backing each one with its own automated test suite rather
+                than shipping and hoping.
               </p>
               <p className="about-text">
-                Currently targeting enterprise software roles at companies
-                like Sampath IT Solutions, WSO2, IFS, and Virtusa — where
-                software quality is not optional.
+                Currently looking for a full-time Software Engineer role
+                where I can keep building things that have to work.
               </p>
             </motion.div>
           </div>

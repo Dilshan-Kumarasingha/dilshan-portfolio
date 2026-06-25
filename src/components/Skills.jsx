@@ -9,16 +9,16 @@ import '../styles/Skills.css'
 // shippable, Familiar = real exposure, not deep expertise.
 const RAW_SKILLS = {
   Backend: [
+    { name: 'C#', level: 72 },
+    { name: 'ASP.NET Core', level: 68 },
     { name: 'Java', level: 75 },
-    { name: 'Spring Boot', level: 60 },
-    { name: 'C#', level: 68 },
-    { name: 'ASP.NET Core', level: 65 },
+    { name: 'Spring Boot', level: 65 },
     { name: 'Python', level: 68 },
     { name: 'Django REST', level: 55 },
   ],
   Frontend: [
     { name: 'React 18', level: 75 },
-    { name: 'TypeScript', level: 70 },
+    { name: 'TypeScript', level: 65 },
     { name: 'JavaScript', level: 75 },
     { name: 'Tailwind CSS', level: 60 },
     { name: 'Framer Motion', level: 62 },
@@ -35,15 +35,14 @@ const RAW_SKILLS = {
     { name: 'RestAssured', level: 62 },
     { name: 'Allure Reports', level: 60 },
   ],
-  'DevOps & Cloud': [
-    { name: 'Docker', level: 60 },
-    { name: 'GitHub Actions', level: 75 },
-    { name: 'AWS', level: 68 },
-    { name: 'Kubernetes', level: 55 },
-    { name: 'Istio', level: 45 },
+  'Real-Time & Jobs': [
+    { name: 'SignalR', level: 62 },
+    { name: 'Hangfire', level: 60 },
   ],
-  Tools: [
+  'DevOps & Tools': [
     { name: 'Git', level: 80 },
+    { name: 'GitHub Actions', level: 75 },
+    { name: 'Docker', level: 60 },
     { name: 'Postman', level: 75 },
     { name: 'IntelliJ IDEA', level: 78 },
     { name: 'VS Code', level: 82 },
@@ -175,10 +174,10 @@ function Skills() {
             What I <span className="title-accent">work with</span>
           </h2>
           <p className="section-sub">
-            Proven across banking systems, real-time platforms, and full QA
-            automation pipelines. Tiers reflect honest working proficiency —
-            Core is what I'd lead with, Familiar is real exposure without
-            deep mastery.
+            Primary stack is C# / ASP.NET Core with React on the frontend,
+            proven across real-time platforms and automated SLA engines.
+            Tiers reflect honest working proficiency — Core is what I'd
+            lead with, Familiar is real exposure without deep mastery.
           </p>
         </motion.div>
 
